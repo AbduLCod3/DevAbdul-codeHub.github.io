@@ -1,0 +1,12 @@
+.classGrid {
+  height: 280px;
+  width: 280px;
+  display: flex;
+  flex-wrap: wrap;
+  /* //background-color: blue; */
+}
+
+.classGrid div {
+  height: 70px;
+  width: 70px;
+}
