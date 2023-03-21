@@ -1,9 +1,13 @@
+body {
+  height: 840px;
+  width: 840px;
+}
 .classGrid {
-  height: 280px;
-  width: 280px;
+  height: 420px;
+  width: 420px;
   display: flex;
   flex-wrap: wrap;
-  /* //background-color: blue; */
+  margin: 20%;
 }
 
 .classGrid div {
