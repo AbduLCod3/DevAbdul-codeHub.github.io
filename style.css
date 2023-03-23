@@ -1,16 +1,31 @@
 body {
-  height: 840px;
-  width: 840px;
+  height: 20%;
+  width: 20%;
 }
 .classGrid {
   height: 420px;
   width: 420px;
   display: flex;
   flex-wrap: wrap;
-  margin: 20%;
+  margin: 50%;
 }
 
 .classGrid div {
   height: 70px;
   width: 70px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+#startButton{
+  margin: 20%
+
+}
+
+#resetButton{
+  margin: 20%
+
 }

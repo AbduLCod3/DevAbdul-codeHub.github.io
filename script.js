@@ -2,13 +2,24 @@
 // before loading my javascript file
 document.addEventListener("DOMContentLoaded", () => {
   const divClassGridEl = document.querySelector(".classGrid");
+  const scoreDisplay = document.getElementById("score");
   const width = 6;
+  let score = 0;
 
   // here we store all divs for candies to work with
   const candyDivs = [];
 
   // list of random candies to be selected
-  const candyImages = ["blue", "green", "orange", "purple", "red", "yellow"];
+  const candyImages = [
+    "url(CandyImages/blue-candy.png)",
+    "url(candyImages/green-candy.png)",
+    "url(candyImages/orange-candy.png)",
+    "url(candyImages/purple-candy.png)",
+    "url(candyImages/red-candy.png",
+    "url(candyImages/yellow-candy.png",
+  ];
+  //Display the score
+  scoreDisplay.innerHTML = score;
 
   // create Board
   function creatBoard() {
@@ -25,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       candyDiv.setAttribute("draggable", true);
 
       // assigns each div a random color/image(CandyImage)
-      candyDiv.style.backgroundColor = candyImages[randomCandy];
+      candyDiv.style.backgroundImage = candyImages[randomCandy];
 
       //append each div for candy to the board div
       divClassGridEl.appendChild(candyDiv);
@@ -43,9 +54,20 @@ document.addEventListener("DOMContentLoaded", () => {
   let movedCandyDivId;
   let updatedCandyDivId;
 
+  // Each event listener will call the specific method passed on
+  // they will show if you started dragging, ended dragging,
+  // or dragged over another div etc.
+  //if you started moving it,
+  candyDivs.forEach((candy) => candy.addEventListener("dragstart", dragStart));
+  candyDivs.forEach((candy) => candy.addEventListener("dragover", dragOver));
+  candyDivs.forEach((candy) => candy.addEventListener("dragenter", dragEnter));
+  candyDivs.forEach((candy) => candy.addEventListener("dragleave", dragLeave));
+  candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
+  candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
+
   function dragStart() {
     // capture the background color of the div/candy being moved
-    movedCandyDiv = this.style.backgroundColor;
+    movedCandyDiv = this.style.backgroundImage;
 
     // capture the id of the div/candy being moves
     movedCandyDivId = parseInt(this.id);
@@ -65,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function dragEnter(e) {
-    // prevent
+    // prevent the drag enterenter
     e.preventDefault();
     console.log(this.id, "dragenter");
   }
@@ -79,12 +101,15 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(this.id, "drop");
 
     // capture what color/candy is the div/candy being replaced
-    updatedCandyDiv = this.style.backgroundColor;
+    updatedCandyDiv = this.style.backgroundImage;
 
     //capture the id of the div being replaced
     updatedCandyDivId = parseInt(this.id);
 
-    candyDivs[movedCandyDivId].style.backgroundColor = updatedCandyDiv;
+    //
+    this.style.backgroundImage = movedCandyDiv;
+
+    candyDivs[movedCandyDivId].style.backgroundImage = updatedCandyDiv;
 
     // let movedCandyDiv; //movedCandyDiv;
     // let updatedCandyDiv; //colorBeingReplaced;
@@ -95,20 +120,245 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function dragEnd() {
     console.log(this.id, "dragend");
-    // Here we valid the moves
+    // Here are we define the valid moves allowed in the game
+    let validMoves = [
+      movedCandyDivId - 1,
+      movedCandyDivId - width,
+      movedCandyDivId + 1,
+      movedCandyDivId + width,
+    ];
+
+    // if the div/candy being replaced can be found in our validMoves array
+    // than that is valid move and we store the boolean true in validMove
+    let validMove = validMoves.includes(updatedCandyDivId);
+
+    if (updatedCandyDivId && validMove) {
+      updatedCandyDivId = null;
+    } else if (updatedCandyDivId && !validMove) {
+      candyDivs[updatedCandyDivId].style.backgroundImage = updatedCandyDiv;
+      candyDivs[movedCandyDivId].style.backgroundImage = movedCandyDiv;
+    } else {
+      candyDivs[movedCandyDivId].style.backgroundImage = movedCandyDiv;
+    }
   }
 
-  // Each event listener will call the specific method passed on
-  // they will show if you started dragging, ended dragging,
-  // or dragged over another div etc.
-  //if you started moving it,
-  candyDivs.forEach((candy) => candy.addEventListener("dragstart", dragStart));
-  candyDivs.forEach((candy) => candy.addEventListener("dragover", dragOver));
-  candyDivs.forEach((candy) => candy.addEventListener("dragenter", dragEnter));
-  candyDivs.forEach((candy) => candy.addEventListener("dragleave", dragLeave));
-  candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
-  candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
+  function moveCandiesBelow() {
+    for (i = 0; i < 29; i++) {
+      if (candyDivs[i + width].style.backgroundImage === "") {
+        candyDivs[i + width].style.backgroundImage =
+          candyDivs[i].style.backgroundImage;
+        candyDivs[i].style.backgroundImage = "";
 
+        const firstRowCandies = [0, 1, 2, 3, 4, 5];
+        if (
+          firstRowCandies.includes(i) &&
+          candyDivs[i].style.backgroundImage === ""
+        ) {
+          let randomCandy = Math.floor(Math.random() * candyImages.length);
+          candyDivs[i].style.backgroundImage = candyImages[randomCandy];
+        }
+      }
+    }
+  }
+
+  // checking for matches
+  // check for row of five
+  function checkRowForFive() {
+    for (i = 0; i < 32; i++) {
+      let rowOfFive = [i, i + 1, i + 2, , i + 3, 1 + 4];
+      let decidedCandyDiv = candyDivs[i].style.backgroundImage;
+
+      const isBlank = candyDivs[i].style.backgroundImage === "";
+
+      // // do I need invalid moves
+      let notValid = [
+        2, 3, 4, 5, 8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 26, 27, 28,
+        29, 32, 33, 34, 35,
+      ];
+
+      if (notValid.includes(i)) {
+        continue;
+      }
+
+      if (
+        rowOfFive.every(
+          (index) =>
+            candyDivs[index].style.backgroundImage === decidedCandyDiv &&
+            !isBlank
+        )
+      ) {
+        score += 5 * 2;
+        scoreDisplay.innerHTML = score;
+        rowOfFive.forEach((index) => {
+          candyDivs[index].style.backgroundImage = "";
+        });
+      }
+    }
+  }
+
+  //checkRowForFive();
+
+  // check for column of Five
+  function checkColumnForFive() {
+    for (i = 0; i < 11; i++) {
+      let columnOfFive = [
+        i,
+        i + width,
+        i + width * 2,
+        i + width * 3,
+        i + width * 4,
+      ];
+      let decidedCandyDiv = candyDivs[i].style.backgroundImage;
+
+      const isBlank = candyDivs[i].style.backgroundImage === "";
+
+      if (
+        columnOfFive.every(
+          (index) =>
+            candyDivs[index].style.backgroundImage === decidedCandyDiv &&
+            !isBlank
+        )
+      ) {
+        score += 5 * 2;
+        scoreDisplay.innerHTML = score;
+        columnOfFive.forEach((index) => {
+          candyDivs[index].style.backgroundImage = "";
+        });
+      }
+    }
+  }
+
+  //checkColumnForFour();
+
+  // check for row of four
+  function checkRowForFour() {
+    for (i = 0; i < 33; i++) {
+      let rowOfFour = [i, i + 1, i + 2, , i + 3];
+      let decidedCandyDiv = candyDivs[i].style.backgroundImage;
+
+      const isBlank = candyDivs[i].style.backgroundImage === "";
+
+      // // do I need invalid moves
+      let notValid = [
+        3, 4, 5, 9, 10, 11, 15, 16, 17, 21, 22, 23, 27, 28, 29, 33, 34, 35,
+      ];
+
+      if (notValid.includes(i)) {
+        continue;
+      }
+
+      if (
+        rowOfFour.every(
+          (index) =>
+            candyDivs[index].style.backgroundImage === decidedCandyDiv &&
+            !isBlank
+        )
+      ) {
+        score += 4 * 2;
+        scoreDisplay.innerHTML = score;
+        rowOfFour.forEach((index) => {
+          candyDivs[index].style.backgroundImage = "";
+        });
+      }
+    }
+  }
+
+  //checkRowForFour();
+
+  // check for column of four
+  function checkColumnForFour() {
+    for (i = 0; i < 17; i++) {
+      let columnOfFour = [i, i + width, i + width * 2, i + width * 3];
+      let decidedCandyDiv = candyDivs[i].style.backgroundImage;
+
+      const isBlank = candyDivs[i].style.backgroundImage === "";
+
+      if (
+        columnOfFour.every(
+          (index) =>
+            candyDivs[index].style.backgroundImage === decidedCandyDiv &&
+            !isBlank
+        )
+      ) {
+        score += 4 * 2;
+        scoreDisplay.innerHTML = score;
+        columnOfFour.forEach((index) => {
+          candyDivs[index].style.backgroundImage = "";
+        });
+      }
+    }
+  }
+
+  //checkColumnForFour();
+
+  // check for row of three
+  function checkRowForThree() {
+    for (i = 0; i < 34; i++) {
+      let rowOfThree = [i, i + 1, i + 2];
+      let decidedCandyDiv = candyDivs[i].style.backgroundImage;
+
+      const isBlank = candyDivs[i].style.backgroundImage === "";
+
+      // do I need invalid moves
+      let notValid = [4, 5, 10, 11, 16, 17, 22, 23, 28, 29, 34, 35];
+
+      if (notValid.includes(i)) {
+        continue;
+      }
+
+      if (
+        rowOfThree.every(
+          (index) =>
+            candyDivs[index].style.backgroundImage === decidedCandyDiv &&
+            !isBlank
+        )
+      ) {
+        score += 3 * 2;
+        scoreDisplay.innerHTML = score;
+        rowOfThree.forEach((index) => {
+          candyDivs[index].style.backgroundImage = "";
+        });
+      }
+    }
+  }
+
+  //checkRowForThree();
+
+  // check for column of three
+  function checkColumnForThree() {
+    for (i = 0; i < 23; i++) {
+      let columnOfThree = [i, i + width, i + width * 2];
+      let decidedCandyDiv = candyDivs[i].style.backgroundImage;
+
+      const isBlank = candyDivs[i].style.backgroundImage === "";
+
+      if (
+        columnOfThree.every(
+          (index) =>
+            candyDivs[index].style.backgroundImage === decidedCandyDiv &&
+            !isBlank
+        )
+      ) {
+        score += 3 * 2;
+        scoreDisplay.innerHTML = score;
+        columnOfThree.forEach((index) => {
+          candyDivs[index].style.backgroundImage = "";
+        });
+      }
+    }
+  }
+
+  // checkColumnForThree();
+
+  window.setInterval(function () {
+    moveCandiesBelow();
+    checkRowForFive();
+    checkColumnForFive();
+    checkRowForFour();
+    checkColumnForFour();
+    checkRowForThree();
+    checkColumnForThree();
+  }, 100);
   //
   //
 });
