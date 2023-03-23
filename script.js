@@ -3,6 +3,8 @@
 document.addEventListener("DOMContentLoaded", () => {
   const divClassGridEl = document.querySelector(".classGrid");
   const scoreDisplay = document.getElementById("score");
+  const startButton = document.getElementById("startButton");
+  const resetButton = document.getElementById("resetButton");
   const width = 6;
   let score = 0;
 
@@ -54,16 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
   let movedCandyDivId;
   let updatedCandyDivId;
 
-  // Each event listener will call the specific method passed on
-  // they will show if you started dragging, ended dragging,
-  // or dragged over another div etc.
-  //if you started moving it,
-  candyDivs.forEach((candy) => candy.addEventListener("dragstart", dragStart));
-  candyDivs.forEach((candy) => candy.addEventListener("dragover", dragOver));
-  candyDivs.forEach((candy) => candy.addEventListener("dragenter", dragEnter));
-  candyDivs.forEach((candy) => candy.addEventListener("dragleave", dragLeave));
-  candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
-  candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
+  // // Each event listener will call the specific method passed on
+  // // they will show if you started dragging, ended dragging,
+  // // or dragged over another div etc.
+  // //if you started moving it,
+  // candyDivs.forEach((candy) => candy.addEventListener("dragstart", dragStart));
+  // candyDivs.forEach((candy) => candy.addEventListener("dragover", dragOver));
+  // candyDivs.forEach((candy) => candy.addEventListener("dragenter", dragEnter));
+  // candyDivs.forEach((candy) => candy.addEventListener("dragleave", dragLeave));
+  // candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
+  // candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
 
   function dragStart() {
     // capture the background color of the div/candy being moved
@@ -349,16 +351,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // checkColumnForThree();
+  // function startGame() {
+  //   setInterval(function () {
+  //     moveCandiesBelow();
+  //     checkRowForFive();
+  //     checkColumnForFive();
+  //     checkRowForFour();
+  //     checkColumnForFour();
+  //     checkRowForThree();
+  //     checkColumnForThree();
+  //   }, 100);
+  // }
 
-  window.setInterval(function () {
-    moveCandiesBelow();
-    checkRowForFive();
-    checkColumnForFive();
-    checkRowForFour();
-    checkColumnForFour();
-    checkRowForThree();
-    checkColumnForThree();
-  }, 100);
+  startButton.addEventListener("click", function () {
+    setInterval(function () {
+      moveCandiesBelow();
+      checkRowForFive();
+      checkColumnForFive();
+      checkRowForFour();
+      checkColumnForFour();
+      checkRowForThree();
+      checkColumnForThree();
+    }, 100);
+
+    // Each event listener will call the specific method passed on
+    // they will show if you started dragging, ended dragging,
+    // or dragged over another div etc.
+    //if you started moving it,
+    candyDivs.forEach((candy) =>
+      candy.addEventListener("dragstart", dragStart)
+    );
+    candyDivs.forEach((candy) => candy.addEventListener("dragover", dragOver));
+    candyDivs.forEach((candy) =>
+      candy.addEventListener("dragenter", dragEnter)
+    );
+    candyDivs.forEach((candy) =>
+      candy.addEventListener("dragleave", dragLeave)
+    );
+    candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
+    candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
+  });
+
+  //reset the game
   //
-  //
+
+  resetButton.addEventListener("click", () => {
+    score = 0;
+    scoreDisplay.innerHTML = score;
+  });
 });
