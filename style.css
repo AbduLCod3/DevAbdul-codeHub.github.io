@@ -1,13 +1,29 @@
 body {
-  height: 20%;
-  width: 20%;
+  display: flex;
+  justify-content: center;
+  background-image: url("candyImages/bgImageCandy.png");
+}
+
+.game {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+
+  /* height: 20%;
+  width: 20%; */
+  background-color: pink;
 }
 .classGrid {
   height: 420px;
   width: 420px;
   display: flex;
   flex-wrap: wrap;
-  margin: 50%;
+  background-color: plum;
+  /* margin: 50%; */
+  margin-bottom: 20px;
 }
 
 .classGrid div {
@@ -17,15 +33,23 @@ body {
 
 .buttons {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: flex-end;
+  background-color: pink;
 }
 
-#startButton{
-  margin: 20%
-
+.scoreDisplay {
+  display: flex;
+  flex-direction: rows;
+  justify-content: space-around;
+  border: 2px solid black;
+  margin-bottom: 20px;
 }
 
-#resetButton{
-  margin: 20%
-
+/* #startButton {
+  margin: 20%;
 }
+
+#resetButton {
+  margin: 20%;
+} */
