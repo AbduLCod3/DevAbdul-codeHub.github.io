@@ -104,12 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
     this.style.backgroundImage = movedCandyDiv;
 
     candyDivs[movedCandyDivId].style.backgroundImage = updatedCandyDiv;
-
-    // let movedCandyDiv; //movedCandyDiv;
-    // let updatedCandyDiv; //colorBeingReplaced;
-
-    // let movedCandyDivId; // squareIDBeingDragged
-    // let updatedCandyDivId; // squareIDBeingReplaced
   }
 
   function dragEnd() {
@@ -343,8 +337,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   startButton.addEventListener("click", function () {
-    // timer set at 7s
-    let timeLeft = 7; // initialize timeLeft to 7
+    // timer set at 10s
+    let timeLeft = 10; // initialize timeLeft to 10
     // display the start of the imer
     levelNum.innerText = `${timeLeft}s`;
     intervalId = setInterval(() => {
@@ -353,7 +347,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (timeLeft === 0) {
         if (score >= 30) {
-          levelName.innerText = "Game Won! ";
+          levelName.innerText = `Game Won! ${score}/30 pts. Congrats!`;
           clearInterval(intervalId);
           removeEventListeners();
         } else {
@@ -406,8 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     candyDivs.forEach((candy) => candy.removeEventListener("dragend", dragEnd));
     candyDivs.forEach((candy) => candy.removeEventListener("drop", dragDrop));
-
-    // document.removeEventListener("click", startButton());
   }
 
   // reset the score and removeEvent listners
@@ -416,10 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
     score = 0;
     scoreDisplay.innerHTML = 0;
     levelName.innerText = "";
-    //let timeLeft = 7; // initialize timeLeft to 15
-    //levelNum.innerText = "LEVEL: 1";
-    // levelNum.innerText = `${timeLeft}s`;
-    removeEventListeners();
+    levelNum.innerText = "";
   });
 
   // }
