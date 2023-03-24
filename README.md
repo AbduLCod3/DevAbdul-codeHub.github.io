@@ -1,7 +1,8 @@
-# PROJECT Title: candyCrushProject
+# Title: 
+   - candyCrushProject
 
 # Motivation: 
-The motivation behind this project was to practice JavaScript fundamentals and gain hands-on experience with the DOM API.
+   - The motivation behind this project was to practice JavaScript fundamentals and gain hands-on experience with the DOM API.
 
 # Tech Used:
   - HTML
@@ -22,5 +23,4 @@ The motivation behind this project was to practice JavaScript fundamentals and g
 # Resources used:
   - https://www.w3schools.com/html/html5_draganddrop.asp
   - https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event
-  - 
   
