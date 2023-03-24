@@ -19,4 +19,5 @@
   - Points earned on automatic match at game start.
   - Sometimes it takes more candies cleared to generate new ones.
   - Better way to account for invalid moves needed.
+  - Make the timer fuctional to produce lost state!
 
