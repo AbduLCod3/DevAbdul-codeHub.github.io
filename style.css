@@ -1,7 +1,9 @@
 body {
   display: flex;
   justify-content: center;
-  background-image: url("candyImages/bgImageCandy.png");
+  background: url(candyImages/bgImageCandy.png) no-repeat;
+  background-size: cover;
+  /* background-repeat: no-repeat; */
 }
 
 .game {
