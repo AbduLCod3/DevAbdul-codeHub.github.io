@@ -1,10 +1,13 @@
 // The following EventListener allows all my html files to be read
 // before loading my javascript file
-document.addEventListener("DOMContentLoaded", () => {
+const load = document.addEventListener("DOMContentLoaded", () => {
   const divClassGridEl = document.querySelector(".classGrid");
   const scoreDisplay = document.getElementById("score");
   const startButton = document.getElementById("startButton");
   const resetButton = document.getElementById("resetButton");
+  const levelName = document.getElementById("level-name");
+  const levelNum = document.getElementById("level-num");
+
   const width = 6;
   let score = 0;
 
@@ -350,18 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // checkColumnForThree();
-  // function startGame() {
-  //   setInterval(function () {
-  //     moveCandiesBelow();
-  //     checkRowForFive();
-  //     checkColumnForFive();
-  //     checkRowForFour();
-  //     checkColumnForFour();
-  //     checkRowForThree();
-  //     checkColumnForThree();
-  //   }, 100);
-  // }
+  levelName.innerText = "LEVEL: 1";
 
   startButton.addEventListener("click", function () {
     setInterval(function () {
@@ -372,6 +364,11 @@ document.addEventListener("DOMContentLoaded", () => {
       checkColumnForFour();
       checkRowForThree();
       checkColumnForThree();
+
+      // if (score >= 30) {
+      //   levelName.innerText = "Congrats! Level 1.";
+      //   levelNum.innerText = "LEVEL 2";
+      // }
     }, 100);
 
     // Each event listener will call the specific method passed on
@@ -392,11 +389,5 @@ document.addEventListener("DOMContentLoaded", () => {
     candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
   });
 
-  //reset the game
-  //
-
-  resetButton.addEventListener("click", () => {
-    score = 0;
-    scoreDisplay.innerHTML = score;
-  });
+  // }
 });
