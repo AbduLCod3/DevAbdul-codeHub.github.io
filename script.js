@@ -1,6 +1,6 @@
 // The following EventListener allows all my html files to be read
 // before loading my javascript file
-const load = document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   const divClassGridEl = document.querySelector(".classGrid");
   const scoreDisplay = document.getElementById("score");
   const startButton = document.getElementById("startButton");
@@ -24,7 +24,7 @@ const load = document.addEventListener("DOMContentLoaded", () => {
     "url(candyImages/yellow-candy.png",
   ];
   //Display the score
-  scoreDisplay.innerHTML = score;
+  scoreDisplay.innerText = score;
 
   // create Board
   function creatBoard() {
@@ -59,22 +59,11 @@ const load = document.addEventListener("DOMContentLoaded", () => {
   let movedCandyDivId;
   let updatedCandyDivId;
 
-  // // Each event listener will call the specific method passed on
-  // // they will show if you started dragging, ended dragging,
-  // // or dragged over another div etc.
-  // //if you started moving it,
-  // candyDivs.forEach((candy) => candy.addEventListener("dragstart", dragStart));
-  // candyDivs.forEach((candy) => candy.addEventListener("dragover", dragOver));
-  // candyDivs.forEach((candy) => candy.addEventListener("dragenter", dragEnter));
-  // candyDivs.forEach((candy) => candy.addEventListener("dragleave", dragLeave));
-  // candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
-  // candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
-
   function dragStart() {
     // capture the background color of the div/candy being moved
     movedCandyDiv = this.style.backgroundImage;
 
-    // capture the id of the div/candy being moves
+    // capture the id of the div/candy being moved
     movedCandyDivId = parseInt(this.id);
 
     // display on the console the current div index
@@ -205,7 +194,7 @@ const load = document.addEventListener("DOMContentLoaded", () => {
 
   // check for column of Five
   function checkColumnForFive() {
-    for (i = 0; i < 11; i++) {
+    for (i = 0; i < 12; i++) {
       let columnOfFive = [
         i,
         i + width,
@@ -353,7 +342,7 @@ const load = document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  levelName.innerText = "LEVEL: 1";
+  levelNum.innerText = "LEVEL: 1";
 
   startButton.addEventListener("click", function () {
     setInterval(function () {
@@ -365,10 +354,16 @@ const load = document.addEventListener("DOMContentLoaded", () => {
       checkRowForThree();
       checkColumnForThree();
 
-      // if (score >= 30) {
-      //   levelName.innerText = "Congrats! Level 1.";
-      //   levelNum.innerText = "LEVEL 2";
-      // }
+      if (score >= 30) {
+        levelName.innerText = "Congrats! Level 1 Won!.";
+        levelNum.innerText = "LEVEL: 2";
+      }
+
+      if (score >= 45) {
+        levelName.innerText = "Congrats! Level 2 Won!.";
+        levelNum.innerText = "GAME WON! THE END!";
+        removeEventListeners();
+      }
     }, 100);
 
     // Each event listener will call the specific method passed on
@@ -387,6 +382,33 @@ const load = document.addEventListener("DOMContentLoaded", () => {
     );
     candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
     candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
+  });
+
+  function removeEventListeners() {
+    // // Remove event listeners
+    candyDivs.forEach((candy) =>
+      candy.removeEventListener("dragstart", dragStart)
+    );
+
+    candyDivs.forEach((candy) =>
+      candy.removeEventListener("dragover", dragOver)
+    );
+    candyDivs.forEach((candy) =>
+      candy.removeEventListener("dragenter", dragEnter)
+    );
+    candyDivs.forEach((candy) =>
+      candy.removeEventListener("dragleave", dragLeave)
+    );
+    candyDivs.forEach((candy) => candy.removeEventListener("dragend", dragEnd));
+    candyDivs.forEach((candy) => candy.removeEventListener("drop", dragDrop));
+
+    // document.removeEventListener("click", startButton());
+  }
+  // reset the score and removeEvent listners
+  resetButton.addEventListener("click", () => {
+    score = 0;
+    scoreDisplay.innerHTML = 0;
+    removeEventListeners();
   });
 
   // }
