@@ -12,10 +12,10 @@
 # Link to live site:
   - https://abdul-xci.github.io/
 
-# Installation Instruction
+# Installation Instruction:
   - git clone https://github.com/Abdul-XCI/candyCrushProject.git
 
-# Unresolved challenges
+# Unresolved challenges:
   - Points earned on automatic match at game start.
   - Sometimes it takes more candies cleared to generate new ones.
   - Better way to account for invalid moves needed.
