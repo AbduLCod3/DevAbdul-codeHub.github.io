@@ -77,17 +77,17 @@ document.addEventListener("DOMContentLoaded", () => {
   function dragOver(e) {
     // prevent
     e.preventDefault();
-    console.log(this.id, "dragover");
+    //console.log(this.id, "dragover");
   }
 
   function dragEnter(e) {
     // prevent the drag enterenter
     e.preventDefault();
-    console.log(this.id, "dragenter");
+    //console.log(this.id, "dragenter");
   }
 
   function dragLeave() {
-    console.log(this.id, "dragleave");
+    //console.log(this.id, "dragleave");
   }
 
   function dragDrop() {
@@ -342,9 +342,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  levelNum.innerText = "LEVEL: 1";
-
   startButton.addEventListener("click", function () {
+    // timer set at 7s
+    let timeLeft = 7; // initialize timeLeft to 7
+    // display the start of the imer
+    levelNum.innerText = `${timeLeft}s`;
+    intervalId = setInterval(() => {
+      timeLeft--; // decrement timeLeft by 1 every second
+      levelNum.innerText = `${timeLeft}s`;
+
+      if (timeLeft === 0) {
+        if (score >= 30) {
+          levelName.innerText = "Game Won! ";
+          clearInterval(intervalId);
+          removeEventListeners();
+        } else {
+          clearInterval(intervalId); // stop the interval when timeLeft reaches 0
+          levelName.innerText = `Game Lost! ${score}/30 pts. Better luck next time!`;
+          removeEventListeners();
+        }
+      }
+    }, 1000); // run the interval function every 1000ms (1 second)
+
     setInterval(function () {
       moveCandiesBelow();
       checkRowForFive();
@@ -353,23 +372,9 @@ document.addEventListener("DOMContentLoaded", () => {
       checkColumnForFour();
       checkRowForThree();
       checkColumnForThree();
-
-      if (score >= 30) {
-        levelName.innerText = "Congrats! Level 1 Won!.";
-        levelNum.innerText = "LEVEL: 2";
-      }
-
-      if (score >= 45) {
-        levelName.innerText = "Congrats! Level 2 Won!.";
-        levelNum.innerText = "GAME WON! THE END!";
-        removeEventListeners();
-      }
     }, 100);
 
     // Each event listener will call the specific method passed on
-    // they will show if you started dragging, ended dragging,
-    // or dragged over another div etc.
-    //if you started moving it,
     candyDivs.forEach((candy) =>
       candy.addEventListener("dragstart", dragStart)
     );
@@ -383,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
     candyDivs.forEach((candy) => candy.addEventListener("dragend", dragEnd));
     candyDivs.forEach((candy) => candy.addEventListener("drop", dragDrop));
   });
-
+  // remove event listeners
   function removeEventListeners() {
     // // Remove event listeners
     candyDivs.forEach((candy) =>
@@ -404,10 +409,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // document.removeEventListener("click", startButton());
   }
+
   // reset the score and removeEvent listners
   resetButton.addEventListener("click", () => {
+    clearInterval(intervalId);
     score = 0;
     scoreDisplay.innerHTML = 0;
+    levelName.innerText = "";
+    //let timeLeft = 7; // initialize timeLeft to 15
+    //levelNum.innerText = "LEVEL: 1";
+    // levelNum.innerText = `${timeLeft}s`;
     removeEventListeners();
   });
 
