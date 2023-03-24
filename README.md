@@ -20,7 +20,3 @@
   - Sometimes it takes more candies cleared to generate new ones.
   - Better way to account for invalid moves needed.
 
-# Resources used:
-  - https://www.w3schools.com/html/html5_draganddrop.asp
-  - https://developer.mozilla.org/en-US/docs/Web/API/Window/DOMContentLoaded_event
-  
